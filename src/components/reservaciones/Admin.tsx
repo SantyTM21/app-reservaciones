@@ -1,6 +1,4 @@
 import { fetchReservacionesAdmin } from '@/app/lib/data';
-import { ArrowRightCircleIcon } from '@heroicons/react/24/outline';
-import { ArrowRightIcon } from '@heroicons/react/24/solid';
 import { ActualizarServicio } from '../button';
 
 export default async function Admin() {

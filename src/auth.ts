@@ -15,12 +15,7 @@ async function getUsuario(email: string): Promise<Usuario | undefined> {
     throw new Error('Fallo al obtener el usuario.');
   }
 }
-export const {
-  handlers: { GET, POST },
-  auth,
-  signIn,
-  signOut,
-} = NextAuth({
+export const { auth, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [
     Credentials({

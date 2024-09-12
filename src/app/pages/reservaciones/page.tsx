@@ -4,6 +4,7 @@ import User from '@/components/reservaciones/User';
 
 export default async function page() {
   const session = await auth();
+  console.log(session);
   const email = session?.user?.email;
   return (
     <>

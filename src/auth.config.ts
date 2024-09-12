@@ -3,12 +3,24 @@ import type { NextAuthConfig } from 'next-auth';
 export const authConfig = {
   pages: {
     signIn: '/login',
+    signOut: '/',
   },
   providers: [
     // added later in auth.ts since it requires bcrypt which is only compatible with Node.js
     // while this file is also used in non-Node.js environments
   ],
+  session: {
+    generateSessionToken: () => {
+      return 'newToken';
+    },
+    maxAge: 30 * 60,
+    strategy: 'jwt',
+    updateAge: 25 * 60,
+  },
   callbacks: {
+    async redirect({ baseUrl }) {
+      return baseUrl;
+    },
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const isOnDashboard = nextUrl.pathname.startsWith('/pages');

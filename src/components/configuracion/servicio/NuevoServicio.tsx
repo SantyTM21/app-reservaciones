@@ -1,8 +1,7 @@
 'use client';
 import type { PutBlobResult } from '@vercel/blob';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { nuevoServicio } from '@/app/lib/actions';
-import ImgUpload from '@/components/upload/ImgUpload';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { Button, Modal } from 'flowbite-react';
 

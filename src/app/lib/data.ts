@@ -29,7 +29,24 @@ export async function fetchReservacionesAdmin() {
 export async function fetchReservacionesUser() {
   const session = await auth();
   try {
-    const data = await sql`SELECT * FROM reservaciones WHERE email = ${session?.user?.email}`;
+    const data = await sql`
+            SELECT 
+            r.id AS id,
+            CONCAT(u.nombre, ' ', u.apellido) AS usuario,
+            r.fecha_inicio,
+            r.fecha_fin,
+            r.estado,
+            ta.nombre AS alquiler,
+            r.total
+        FROM 
+            reservaciones r
+        JOIN 
+            usuarios u ON r.usuario_id = u.id
+        JOIN 
+            tipo_alquiler ta ON r.tipo_alquiler_id = ta.id
+        WHERE 
+            u.email = ${session?.user?.email};
+        `;
     return data.rows;
   } catch (error) {
     console.error('Error de base de datos:', error);

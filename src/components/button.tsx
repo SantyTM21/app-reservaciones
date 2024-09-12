@@ -1,5 +1,11 @@
-import { ArrowRightCircleIcon, PlusIcon } from '@heroicons/react/24/outline';
+import {
+  ArrowRightCircleIcon,
+  ArrowRightEndOnRectangleIcon,
+  PlusIcon,
+  UserPlusIcon,
+} from '@heroicons/react/24/outline';
 import clsx from 'clsx';
+import Image from 'next/image';
 import Link from 'next/link';
 import { UrlObject } from 'url';
 
@@ -38,4 +44,26 @@ export function ActualizarServicio({ id }: { id: number }) {
       <ArrowRightCircleIcon className='sh-5 w-5 text-white fond-bold' />
     </Link>
   );
+}
+
+export function ButtonLogin() {
+  return (
+    <Link href='/login' className='flex items-center gap-2' prefetch={false}>
+      <ArrowRightEndOnRectangleIcon className='h-5 w-5' />
+      Iniciar Sesión
+    </Link>
+  );
+}
+
+export function ButtonRegister() {
+  return (
+    <Link href='/registro' className='flex items-center gap-2' prefetch={false}>
+      <UserPlusIcon className='h-5 w-5' />
+      Crear Cuenta
+    </Link>
+  );
+}
+
+export function ButtonLogo() {
+  return <Image src='/img/logo.png' alt='logo' width={300} height={100} />;
 }

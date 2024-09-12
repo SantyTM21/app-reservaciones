@@ -3,17 +3,17 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request: Request): Promise<NextResponse> {
   const { searchParams } = new URL(request.url);
-  const filename = searchParams.get('filename');
+  const filename = searchParams.get('filename') || 'default-filename';
 
-  // ⚠️ The below code is for App Router Route Handlers only
+  if (!request.body) {
+    // Handle the case where request.body is null
+    // You can return an error response or throw an exception
+    return NextResponse.json({ error: 'Request body is null' });
+  }
+
   const blob = await put(filename, request.body, {
     access: 'public',
   });
-
-  // Here's the code for Pages API Routes:
-  // const blob = await put(filename, request, {
-  //   access: 'public',
-  // });
 
   return NextResponse.json(blob);
 }
