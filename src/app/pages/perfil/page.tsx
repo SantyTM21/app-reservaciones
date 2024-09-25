@@ -5,8 +5,7 @@ import { fetchUsuarioByMail } from '../../lib/data';
 export default async function Component() {
   const user = await fetchUsuarioByMail();
   return (
-    <div>
-      <h1 className='text-3xl'>Perfil de </h1>
+    <div className='max-w-2xl mx-auto'>
       <PerfilForm {...user} />
     </div>
   );

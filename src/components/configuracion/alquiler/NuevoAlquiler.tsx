@@ -30,24 +30,22 @@ export default function NuevoServicio() {
 
   return (
     <>
-      <Button
+      <button
         onClick={() => setOpenModal(true)}
-        className='rounded-full shadow-md font-bold  bg-green-500 transition-colors hover:bg-green-400 focus-visible:outline-green-500 active:bg-green-600 '
+        className='flex items-center gap-2 p-3 rounded-full shadow-md font-bold text-white bg-indigo-500 transition-colors hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-500 active:bg-indigo-600'
       >
         <PlusIcon className='h-5 w-5' /> Nuevo Alquiler
-      </Button>
+      </button>
+
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
         <Modal.Header>Nuevo Alquiler</Modal.Header>
         <Modal.Body>
           <form className='space-y-3' autoComplete='off' onSubmit={handleSubmit}>
-            <div className='flex-1 rounded-lg bg-green-400 px-6 pb-4 pt-8 font-medium'>
+            <div className='flex-1 rounded-lg px-6 pb-4 pt-8 font-medium'>
               <h1 className={`mb-3 text-2xl`}>Crea un nuevo alquiler </h1>
               <div className='w-full'>
                 <div>
-                  <label
-                    className='mb-3 mt-5 block text-xs font-medium text-gray-900'
-                    htmlFor='nombre'
-                  >
+                  <label className='mb-2 mt-5 block  font-medium text-gray-900' htmlFor='nombre'>
                     Nombre del Alquiler
                   </label>
                   <div className='relative'>
@@ -62,10 +60,7 @@ export default function NuevoServicio() {
                   </div>
                 </div>
                 <div>
-                  <label
-                    className='mb-3 mt-5 block text-xs font-medium text-gray-900'
-                    htmlFor='precio'
-                  >
+                  <label className='mb-2 mt-5 block  font-medium text-gray-900' htmlFor='precio'>
                     Precio del Alquiler
                   </label>
                   <div className='relative'>
@@ -81,11 +76,11 @@ export default function NuevoServicio() {
                   </div>
                 </div>
               </div>
-              <div className='flex rounded-lg gap-2 content-center justify-center bg-green-400 px-6 pb-4 pt-8 font-medium'>
-                <Button type='submit' className='mt-4 w-[40%]' disabled={loading}>
+              <div className='flex rounded-lg gap-2 content-center justify-center px-6 pb-4 pt-8 font-medium'>
+                <Button type='submit' className='mt-4 w-[40%]' disabled={loading} color='indigo'>
                   {loading ? 'Guardando...' : 'Guardar'}
                 </Button>
-                <Button className='mt-4 w-[40%]' color='gray' onClick={() => setOpenModal(false)}>
+                <Button className='mt-4 w-[40%]' color='slate' onClick={() => setOpenModal(false)}>
                   Cerrar
                 </Button>
               </div>

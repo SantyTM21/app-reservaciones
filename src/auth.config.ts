@@ -13,9 +13,9 @@ export const authConfig = {
     generateSessionToken: () => {
       return 'newToken';
     },
-    maxAge: 30 * 60,
+    maxAge: 30 * 60, //Tiempo: 30 minutes
     strategy: 'jwt',
-    updateAge: 25 * 60,
+    updateAge: 10 * 60,
   },
   callbacks: {
     async redirect({ baseUrl }) {

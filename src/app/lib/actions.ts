@@ -1,11 +1,11 @@
 'use server';
 
-import { sql } from '@vercel/postgres';
+import { QueryResultRow, sql } from '@vercel/postgres';
 import bcrypt from 'bcrypt';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-import { signIn } from '../../auth';
+import { signIn, auth } from '../../auth';
 import { AuthError } from 'next-auth';
 
 //Editar Perfil
@@ -77,13 +77,13 @@ export async function editarAlquiler(formData: FormData) {
 
 //Nuevo Servicio
 export async function nuevoServicio(formData: FormData) {
-  const { nombre, detalle, precio, stock, urlimg } = Object.fromEntries(formData);
+  const { nombre, detalle, precio, stock, urlImg } = Object.fromEntries(formData);
   console.log(formData);
   try {
     await sql`
     INSERT INTO servicios (nombre,detalle,precio,stock,urlimg)
     VALUES (${nombre.toString()}, ${detalle.toString()}, ${Number(precio)}, 
-    ${Number(stock)}, ${urlimg.toString()})`;
+    ${Number(stock)}, ${urlImg.toString()})`;
   } catch (error) {
     console.error('Error de base de datos:', error);
     throw { message: 'Error al registrar el Servicio' };
@@ -93,19 +93,117 @@ export async function nuevoServicio(formData: FormData) {
 
 //Editar Servicio
 export async function editarServicio(formData: FormData) {
-  const { id, nombre, detalle, precio, stock, urlimg } = Object.fromEntries(formData);
-  console.log(formData);
+  const { id, nombre, detalle, precio, stock, urlImg } = Object.fromEntries(formData);
+  console.log(urlImg);
   try {
     await sql`
     UPDATE servicios
-    SET nombre = ${nombre.toString()}, detalle = ${detalle.toString()}, precio = ${Number(precio)}, 
-    stock = ${Number(stock)}, urlimg = ${urlimg.toString()}
+    SET nombre = ${nombre.toString()}, detalle = ${detalle.toString()}, precio = ${Number(precio)},
+    stock = ${Number(stock)}, urlimg = ${urlImg.toString()}
     WHERE id = ${Number(id)}`;
   } catch (error) {
     console.error('Error de base de datos:', error);
     throw { message: 'Error al editar el Servicio' };
   }
   revalidatePath('/pages/configuraciones/servicios');
+}
+
+//Nueva Reservación
+export async function nuevaReservacion(formData: FormData) {
+  // console.log('formData', formData);
+  const session = await auth(); // Obtener la sesión del usuario autenticado
+  const fecha_registro = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+  // Obtener los datos desde el formData
+  const { fechaInicio, fechaFin, alquiler, total } = Object.fromEntries(formData);
+  const servicios = JSON.parse(formData.get('servicios') as string);
+
+  try {
+    const result = await sql`
+    INSERT INTO reservaciones (
+      fecha_registro,
+      fecha_inicio,
+      hora_inicio,
+      fecha_fin,
+      hora_fin,
+      estado,
+      total,
+      usuario_id,
+      tipo_alquiler_id
+    ) VALUES (
+      ${fecha_registro},
+      ${fechaInicio.toString()},
+      ${'00:00:00'},
+      ${fechaFin.toString()},
+      ${'00:00:00'},
+      'Pendiente',
+      ${Number(total)},
+      (SELECT id FROM usuarios WHERE email = ${session?.user?.email}),
+      ${alquiler.toString()}
+    )
+    RETURNING id;
+  `;
+
+    // Extraer el ID de la nueva reservación
+    const newReservationId = result.rows[0].id;
+    try {
+      // Mapeamos los servicios para generar los valores que queremos insertar
+      for (const servicio of servicios) {
+        await sql`
+            INSERT INTO reservaciones_servicios (
+            reservacion_id,
+            servicio_id,
+            cantidad
+            ) VALUES (
+              ${newReservationId}, ${servicio.id}, ${servicio.cantidad ? servicio.cantidad : 1}
+            )
+        `;
+      }
+
+      console.log('Servicios añadidos exitosamente a la reservación');
+    } catch (error) {
+      console.error('Error al insertar servicios:', error);
+      throw new Error('Failed to insert services');
+    }
+  } catch (error) {
+    console.error('Error de base de datos:', error);
+    throw { message: 'Error al registrar la reservación' };
+  }
+
+  revalidatePath('/pages/reservaciones/');
+  redirect('/pages/reservaciones/');
+}
+
+//Cancelar Reservación
+export async function cancelarReservacionById(formData: FormData) {
+  const { id } = Object.fromEntries(formData);
+  try {
+    await sql`
+    UPDATE reservaciones
+    SET estado = 'Cancelada'
+    WHERE id = ${Number(id)}`;
+  } catch (error) {
+    console.error('Error de base de datos:', error);
+    throw { message: 'Error al cancelar la reservación' };
+  }
+  revalidatePath('/pages/reservaciones/');
+  redirect('/pages/reservaciones/');
+}
+
+//Aprobar Reservación
+export async function aprobarReservacionById(formData: FormData) {
+  const { id } = Object.fromEntries(formData);
+  try {
+    await sql`
+    UPDATE reservaciones
+    SET estado = 'Aprobada'
+    WHERE id = ${Number(id)}`;
+  } catch (error) {
+    console.error('Error de base de datos:', error);
+    throw { message: 'Error al aprobar la reservación' };
+  }
+  revalidatePath('/pages/reservaciones/');
+  redirect('/pages/reservaciones/');
 }
 
 //Iniciar Sesion

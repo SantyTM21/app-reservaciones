@@ -8,7 +8,7 @@ import { registrarUsuario } from '../../app/lib/actions';
 export default function RegistroForm() {
   return (
     <form className='space-y-3' autoComplete='off' action={registrarUsuario}>
-      <div className='flex-1 rounded-lg bg-green-400 px-6 pb-4 pt-8 font-medium'>
+      <div className='flex-1 rounded-lg px-6 pb-4 pt-8 font-medium'>
         <h1 className={`mb-3 text-2xl`}>Información de Registro </h1>
         <div className='w-full'>
           <div>

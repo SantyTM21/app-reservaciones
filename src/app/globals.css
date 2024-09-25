@@ -52,9 +52,25 @@ body {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  background-color: rgba(0, 255, 255, 0.096);
+  background-color: #d1cfe2;
 }
 .body-layout {
   display: flex;
   gap: 10px;
+}
+
+input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+form {
+  div {
+    background-color: #7ec4cf;
+  }
+
+  button {
+    background-color: #9cadce;
+  }
 }

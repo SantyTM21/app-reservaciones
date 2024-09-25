@@ -9,7 +9,7 @@ export default function PerfilForm(usuario: any) {
   const user = usuario;
   return (
     <form className='space-y-3' autoComplete='off' action={editarPerfil}>
-      <div className='flex-1 rounded-lg bg-green-400 px-6 pb-4 pt-8 font-medium'>
+      <div className='flex-1 rounded-lg px-6 pb-4 pt-8 font-medium'>
         <h1 className={`mb-3 text-2xl`}>Edita tu perfil </h1>
         <div className='w-full'>
           <div>

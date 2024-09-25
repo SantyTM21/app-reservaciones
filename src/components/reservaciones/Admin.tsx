@@ -1,13 +1,12 @@
 import { fetchReservacionesAdmin } from '@/app/lib/data';
-import { ActualizarServicio } from '../button';
+import { ActualizarReservacion } from '../button';
 
 export default async function Admin() {
   const reservaciones = await fetchReservacionesAdmin();
   return (
-    <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
-      <h2 className='col-span-2 text-2xl font-bold mb-4'>Todas las reservaciones</h2>
+    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
       {reservaciones?.map((reservacion) => (
-        <div key={reservacion.id} className='bg-white shadow-md rounded-lg overflow-hidden p-4'>
+        <div key={reservacion.id} className='bg-white shadow-md rounded-lg p-4'>
           <div className='grid grid-cols-1 sm:grid-cols-[1fr,1fr,auto] gap-4'>
             {/* Primera columna */}
             <div>
@@ -49,8 +48,10 @@ export default async function Admin() {
             </div>
 
             {/* Tercera columna */}
-            <div className='mt-5 p-2 h-9 bg-blue-600 rounded-lg'>
-              <ActualizarServicio id={reservacion.id} />
+            <div className='flex justify-center items-center'>
+              <div className='bg-indigo-500 rounded-lg p-1'>
+                <ActualizarReservacion id={reservacion.id} />
+              </div>
             </div>
           </div>
         </div>

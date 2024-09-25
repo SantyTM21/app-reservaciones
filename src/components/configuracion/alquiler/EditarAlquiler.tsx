@@ -1,7 +1,7 @@
 'use client';
 
 import { editarAlquiler } from '@/app/lib/actions';
-import { PencilIcon, PlusIcon } from '@heroicons/react/24/outline';
+import { PencilIcon } from '@heroicons/react/24/outline';
 import { Button, Modal } from 'flowbite-react';
 import { useState } from 'react';
 
@@ -40,7 +40,7 @@ export default function EditarServicio(alquiler: any) {
         <Modal.Header>Nuevo Alquiler</Modal.Header>
         <Modal.Body>
           <form className='space-y-3' autoComplete='off' onSubmit={handleSubmit}>
-            <div className='flex-1 rounded-lg bg-green-400 px-6 pb-4 pt-8 font-medium'>
+            <div className='flex-1 rounded-lg px-6 pb-4 pt-8 font-medium'>
               <h1 className={`mb-3 text-2xl`}>Crea un nuevo alquiler </h1>
               <div className='w-full'>
                 <input type='text' name='id' hidden value={alq.id} />
@@ -82,10 +82,14 @@ export default function EditarServicio(alquiler: any) {
                   </div>
                 </div>
               </div>
-              <div className='flex rounded-lg gap-2 content-center justify-center bg-green-400 px-6 pb-4 pt-8 font-medium'>
-                <Button type='submit' className='mt-4 w-[40%]' disabled={loading}>
+              <div className='flex rounded-lg gap-2 content-center justify-center px-6 pb-4 pt-8 font-medium'>
+                <button
+                  type='submit'
+                  className='mt-4 w-[40%] bg-indigo-500 rounded py-2 text-white'
+                  disabled={loading}
+                >
                   {loading ? 'Guardando...' : 'Guardar'}
-                </Button>
+                </button>
                 <Button className='mt-4 w-[40%]' color='gray' onClick={() => setOpenModal(false)}>
                   Cerrar
                 </Button>

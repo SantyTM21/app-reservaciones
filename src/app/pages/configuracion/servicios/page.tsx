@@ -34,28 +34,12 @@ export default async function page() {
           </div>
         ))}
       </div>
-      <div className='fixed top-4 right-4 z-10'>
+      <div className='hidden fixed top-4 right-4 z-10 md:block'>
+        <NuevoServicio />
+      </div>
+      <div className='block fixed bottom-4 right-4 z-10 md:hidden'>
         <NuevoServicio />
       </div>
     </div>
-
-    // <div className='relative'>
-    //   <h1 className='text-3xl font-bold'>Servicio</h1>
-
-    //   <div className='py-3'>
-    //     {servicios.map((servicio) => (
-    //       <div className='text-2xl' key={servicio.id}>
-    //         <span className='font-semibold'>Nombre: </span> {servicio.nombre}{' '}
-    //         <span className='font-semibold'>Detalle: </span> {servicio.detalle}{' '}
-    //         <span className='font-semibold'>Precio:</span> ${servicio.precio}
-    //         <span className='font-semibold'>Stock:</span> ${servicio.stock}
-    //         <img src={servicio.urlimg} alt={servicio.urlimg} width={100} height={100} />
-    //       </div>
-    //     ))}
-    //   </div>
-    //   <div className='absolute bottom-4 right-4'>
-    //     <NuevoServicio />
-    //   </div>
-    // </div>
   );
 }

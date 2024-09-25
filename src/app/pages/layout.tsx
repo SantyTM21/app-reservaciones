@@ -1,9 +1,9 @@
 import Sidebar from '@/components/Sidebar';
 
-// export const metadata = {
-//   title: 'dashboard',
-//   description: 'Agendar eventos y mucho mas',
-// };
+export const metadata = {
+  title: 'Jagg Eventos',
+  description: 'Agendar eventos y mucho mas',
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

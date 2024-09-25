@@ -2,6 +2,9 @@ import { fetchReservacionById, fetchServiciosByReservacion } from '@/app/lib/dat
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { formatoFecha, formatoMoneda } from '@/app/lib/utils';
+import BotonCancelar from '@/components/reservaciones/BotonCancelar';
+import { auth } from '@/auth';
+import BotonAprobar from '@/components/reservaciones/BotonAprobar';
 
 export const metadata: Metadata = {
   title: 'Aprobar reservación',
@@ -9,6 +12,9 @@ export const metadata: Metadata = {
 
 export default async function Page({ params }: { params: { id: number } }) {
   const id = params.id;
+  const session = await auth();
+  const email = session?.user?.email;
+
   const [reservacion, servicios] = await Promise.all([
     fetchReservacionById(id),
     fetchServiciosByReservacion(id),
@@ -34,6 +40,20 @@ export default async function Page({ params }: { params: { id: number } }) {
       </p>
       <p>
         <b>Tipo de alquiler: </b> {reservacion.alquiler}
+      </p>
+      <p>
+        <span className='text-gray-500 mb-4'>Estado: </span>
+        <span
+          className={`${
+            reservacion.estado === 'Cancelada'
+              ? 'text-red-500'
+              : reservacion.estado === 'Aprobada'
+              ? 'text-green-500'
+              : 'text-gray-500'
+          } font-semibold`}
+        >
+          {reservacion.estado}
+        </span>
       </p>
       Detalle de los servicios:
       <table className='hidden min-w-full text-gray-900 md:table'>
@@ -75,6 +95,12 @@ export default async function Page({ params }: { params: { id: number } }) {
       <p>
         <b>Total: {formatoMoneda(reservacion.total)}</b>
       </p>
+      <div className='flex justify-center gap-2'>
+        <BotonCancelar id={reservacion.id} disable={reservacion.estado == 'Cancelada'} />
+        {email === 'admin@gmail.com' && (
+          <BotonAprobar id={reservacion.id} disable={reservacion.estado == 'Aprobada'} />
+        )}
+      </div>
     </main>
   );
 }

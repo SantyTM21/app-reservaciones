@@ -18,7 +18,7 @@ export function Button({ children, className, ...rest }: ButtonProps) {
     <button
       {...rest}
       className={clsx(
-        'flex h-10 items-center rounded-lg bg-blue-500 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 active:bg-blue-600 aria-disabled:cursor-not-allowed aria-disabled:opacity-50',
+        'flex h-10 items-center rounded-lg bg-indigo-400 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 active:bg-blue-600 aria-disabled:cursor-not-allowed aria-disabled:opacity-50',
         className
       )}
     >
@@ -38,9 +38,19 @@ export function NuevoServicio() {
     </Link>
   );
 }
-export function ActualizarServicio({ id }: { id: number }) {
+
+export function NuevaReservacion() {
   return (
-    <Link href={`/pages/reservaciones/${id}/edit`}>
+    <Link href={`/pages/reservaciones/nueva-res`}>
+      <span className='flex gap-1 bg-indigo-500 text-white px-2 py-1 rounded-lg'>
+        <PlusIcon className='sh-5 w-5 fond-bold' /> Nueva Reservación
+      </span>
+    </Link>
+  );
+}
+export function ActualizarReservacion({ id }: { id: number }) {
+  return (
+    <Link href={`/pages/reservaciones/${id}/edit`} className='w-40'>
       <ArrowRightCircleIcon className='sh-5 w-5 text-white fond-bold' />
     </Link>
   );

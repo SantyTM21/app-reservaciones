@@ -132,13 +132,23 @@ export async function fetchAlquileres() {
   }
 }
 
-//Usuario
-
+//Usuario por email
 export async function fetchUsuarioByMail() {
   const session = await auth();
   try {
     const data = await sql`SELECT * FROM usuarios WHERE email = ${session?.user?.email}`;
     return data.rows[0];
+  } catch (error) {
+    console.error('Error de base de datos:', error);
+    throw new Error('Failed to fetch user data.');
+  }
+}
+
+//Listar todos los usuarios
+export async function fetchAllUsers() {
+  try {
+    const data = await sql`SELECT * FROM usuarios WHERE rol_id != 1`;
+    return data.rows;
   } catch (error) {
     console.error('Error de base de datos:', error);
     throw new Error('Failed to fetch user data.');

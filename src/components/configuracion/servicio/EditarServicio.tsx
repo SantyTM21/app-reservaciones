@@ -5,7 +5,6 @@ import { useState, useRef } from 'react';
 import { editarServicio } from '@/app/lib/actions';
 import { PencilIcon } from '@heroicons/react/24/outline';
 import { Button, Modal } from 'flowbite-react';
-import { set } from 'zod';
 
 export default function EditarServicio(servicio: any) {
   const srv = servicio;
@@ -27,6 +26,7 @@ export default function EditarServicio(servicio: any) {
 
     const file = inputFileRef.current.files[0];
 
+    const formData = new FormData(event.target as HTMLFormElement);
     try {
       // Intentar cargar la imagen
       const response = await fetch(`/api/avatar/upload?filename=${file.name}`, {
@@ -42,9 +42,9 @@ export default function EditarServicio(servicio: any) {
       // Obtener el resultado de la subida de imagen
       const newBlob = (await response.json()) as PutBlobResult;
       setBlob(newBlob);
+      formData.append('urlImg', newBlob.url);
 
       // Si la imagen se subió correctamente, proceder con el envío del formulario
-      const formData = new FormData(event.target as HTMLFormElement);
 
       // Intentar enviar los datos del formulario
       try {
@@ -70,7 +70,7 @@ export default function EditarServicio(servicio: any) {
         <Modal.Header>Editar Servicio</Modal.Header>
         <Modal.Body>
           <form className='space-y-3' autoComplete='off' onSubmit={handleSubmit}>
-            <div className='flex-1 rounded-lg bg-green-400 px-6 pb-4 pt-8 font-medium'>
+            <div className='flex-1 rounded-lg px-6 pb-4 pt-8 font-medium'>
               <h1 className={`mb-3 text-2xl`}>Crea un nuevo servicio </h1>
               <input type='text' name='id' hidden defaultValue={srv.id} />
               <div className='w-full'>
@@ -152,13 +152,17 @@ export default function EditarServicio(servicio: any) {
                 <img src={srv.urlimg} alt='servicio' className='w-32 h-32 py-3' />
                 <div>
                   <input ref={inputFileRef} type='file' accept='image/*' />
-                  <input type='text' name='urlimg' id='urlimg' hidden value={blob?.url} />
+                  {/* <input type='text' name='urlimg' id='urlimg' hidden value={blob?.url} /> */}
                 </div>
               </div>
-              <div className='flex rounded-lg gap-2 content-center justify-center bg-green-400 px-6 pb-4 pt-8 font-medium'>
-                <Button type='submit' className='mt-4 w-[40%]' disabled={loading}>
+              <div className='flex rounded-lg gap-2 content-center justify-center px-6 pb-4 pt-8 font-medium'>
+                <button
+                  type='submit'
+                  className='mt-4 w-[40%] bg-indigo-500 rounded py-2 text-white'
+                  disabled={loading}
+                >
                   {loading ? 'Guardando...' : 'Guardar'}
-                </Button>
+                </button>
                 <Button className='mt-4 w-[40%]' color='gray' onClick={() => setOpenModal(false)}>
                   Cerrar
                 </Button>
